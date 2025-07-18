@@ -1,10 +1,9 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const cors = require('cors'); // Adiciona o cors
+const cors = require('cors');
 const app = express();
 
-// Habilitar CORS para o domínio do frontend
 app.use(cors({
     origin: 'https://transitoaovivo.com'
 }));
@@ -18,17 +17,14 @@ app.get('/transito', async (req, res) => {
         });
         const $ = cheerio.load(response.data);
 
-        // Extrair dados das regiões
         const norte = $('.info.norte h4').text().replace(' km', '') || '0';
         const oeste = $('.info.oeste h4').text().replace(' km', '') || '0';
         const centro = $('.info.centro h4').text().replace(' km', '') || '0';
         const leste = $('.info.leste h4').text().replace(' km', '') || '0';
         const sul = $('.info.sul h4').text().replace(' km', '') || '0';
 
-        // Calcular total somando as regiões
         const total = parseInt(norte) + parseInt(oeste) + parseInt(centro) + parseInt(leste) + parseInt(sul);
 
-        // Extrair data
         const dataHora = $('.boxTransito ul li:first-child').text() || new Date().toLocaleString('pt-BR');
 
         res.json({
