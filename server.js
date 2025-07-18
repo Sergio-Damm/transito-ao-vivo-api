@@ -1,5 +1,5 @@
 const express = require('express');
-const { request } = require('undici');
+const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
 const app = express();
@@ -10,13 +10,12 @@ app.use(cors({
 
 app.get('/transito', async (req, res) => {
     try {
-        const { body } = await request('https://www.cetsp.com.br/', {
+        const response = await axios.get('https://www.cetsp.com.br/', {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
             }
         });
-        const responseData = await body.text();
-        const $ = cheerio.load(responseData);
+        const $ = cheerio.load(response.data);
 
         const norte = $('.info.norte h4').text().replace(' km', '') || '0';
         const oeste = $('.info.oeste h4').text().replace(' km', '') || '0';
