@@ -1,5 +1,7 @@
-const express = require('express');
 const axios = require('axios');
+console.log('Versão do Axios:', axios.VERSION);
+
+const express = require('express');
 const cheerio = require('cheerio');
 const cors = require('cors');
 const app = express();
